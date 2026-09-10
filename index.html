@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>あさのかい きょうのたいちょう</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <!-- ヘッダー -->
+    <header class="app-header">
+      <h1 class="app-title">
+        <span class="title-icon">☀️</span>
+        <span class="title-text" id="title-text">きょうの たいちょうは どうですか？</span>
+      </h1>
+      <div class="header-controls">
+        <button id="btn-toggle-voice" class="control-btn" title="おんせいの ON/OFF">
+          <span class="icon">🔊</span>
+          <span class="btn-label">おんせい ON</span>
+        </button>
+        <button id="btn-toggle-fullscreen" class="control-btn" title="ぜんめんひょうじ">
+          <span class="icon">⛶</span>
+          <span class="btn-label">ぜんめん</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2×3 グリッドのカードエリア -->
+    <main class="grid-container">
+      <!-- 1. 元気 -->
+      <button class="status-card card-genki" data-id="genki" data-label="げんき" data-speech="げんき！今日も元気にがんばろう！" data-message="げんき いっぱい！">
+        <div class="image-wrapper">
+          <img src="images/genki.png" alt="げんき" class="status-img">
+          <div class="fallback-icon" style="display: none;">😄</div>
+        </div>
+        <div class="label-wrapper">
+          <span class="main-label">げんき</span>
+        </div>
+      </button>
+
+      <!-- 2. 風邪気味 -->
+      <button class="status-card card-kazegimi" data-id="kazegimi" data-label="かぜぎみ" data-speech="かぜぎみ。むりしないでね。" data-message="かぜぎみ。むりしないでね">
+        <div class="image-wrapper">
+          <img src="images/kazegimi.png" alt="かぜぎみ" class="status-img">
+          <div class="fallback-icon" style="display: none;">😷</div>
+        </div>
+        <div class="label-wrapper">
+          <span class="main-label">かぜぎみ</span>
+        </div>
+      </button>
+
+      <!-- 3. 眠い -->
+      <button class="status-card card-nemui" data-id="nemui" data-label="ねむい" data-speech="ねむい。ゆっくり目をさましていこうね。" data-message="ねむい。ゆっくりいこうね">
+        <div class="image-wrapper">
+          <img src="images/nemui.png" alt="ねむい" class="status-img">
+          <div class="fallback-icon" style="display: none;">🥱</div>
+        </div>
+        <div class="label-wrapper">
+          <span class="main-label">ねむい</span>
+        </div>
+      </button>
+
+      <!-- 4. ワクワク -->
+      <button class="status-card card-wakuwaku" data-id="wakuwaku" data-label="わくわく" data-speech="わくわく！たのしいことがありそうだね！" data-message="わくわく！たのしみだね！">
+        <div class="image-wrapper">
+          <img src="images/wakuwaku.png" alt="わくわく" class="status-img">
+          <div class="fallback-icon" style="display: none;">✨</div>
+        </div>
+        <div class="label-wrapper">
+          <span class="main-label">わくわく</span>
+        </div>
+      </button>
+
+      <!-- 5. おなかすいた -->
+      <button class="status-card card-onaka" data-id="onaka" data-label="おなかすいた" data-speech="おなかすいた。きゅうしょくがたのしみだね。" data-message="おなかすいた！きゅうしょく まちどおしいね">
+        <div class="image-wrapper">
+          <img src="images/onaka.png" alt="おなかすいた" class="status-img">
+          <div class="fallback-icon" style="display: none;">🍙</div>
+        </div>
+        <div class="label-wrapper">
+          <span class="main-label">おなかすいた</span>
+        </div>
+      </button>
+
+      <!-- 6. かなしい -->
+      <button class="status-card card-kanashii" data-id="kanashii" data-label="かなしい" data-speech="かなしい。せんせいやおともだちがいるよ。" data-message="かなしい。おはなしきくよ">
+        <div class="image-wrapper">
+          <img src="images/kanashii.png" alt="かなしい" class="status-img">
+          <div class="fallback-icon" style="display: none;">🥺</div>
+        </div>
+        <div class="label-wrapper">
+          <span class="main-label">かなしい</span>
+        </div>
+      </button>
+    </main>
+  </div>
+
+  <!-- 選択時のモーダルダイアログ -->
+  <div id="result-modal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <div id="modal-card" class="modal-card">
+        <div id="modal-image-wrapper" class="modal-image-wrapper">
+          <!-- 選択された画像/アイコンが複製されます -->
+        </div>
+        <h2 id="modal-title" class="modal-title">げんき</h2>
+        <p id="modal-message" class="modal-message">げんき いっぱい！</p>
+      </div>
+      <div class="modal-buttons">
+        <button id="btn-next" class="action-btn btn-next">
+          <span class="btn-icon">👉</span>
+          <span>つぎの おともだち</span>
+        </button>
+        <button id="btn-back" class="action-btn btn-back">
+          <span class="btn-icon">↩️</span>
+          <span>もういちど えらぶ</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 花吹雪・パーティクルキャンバス -->
+  <canvas id="particle-canvas"></canvas>
+
+  <script src="script.js"></script>
+</body>
+</html>

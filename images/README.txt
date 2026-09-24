@@ -8,6 +8,7 @@
 4. ワクワク    -> wakuwaku.png
 5. おなかすいた -> onaka.png
 6. かなしい    -> kanashii.png
+7. 疲れた      -> tsukareta.png
 
 ※ 画像形式は PNG（.png）を推奨します（背景が透明なイラストが見栄え良く表示されます）。
 ※ JPG（.jpg）やSVG（.svg）を使用したい場合は、index.html 内の拡張子をご変更いただくか、PNG形式で保存してください。

@@ -35,6 +35,10 @@
   --card-kanashii-border: #78909c;
   --card-kanashii-text: #37474f;
 
+  --card-tsukareta-bg: #f5efe8;
+  --card-tsukareta-border: #8d6e63;
+  --card-tsukareta-text: #4e342e;
+
   /* 影 */
   --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
   --shadow-hover: 0 14px 28px rgba(0, 0, 0, 0.15), 0 6px 10px rgba(0, 0, 0, 0.08);
@@ -142,14 +146,24 @@ html, body {
   color: #b91c1c;
 }
 
-/* 2×3 グリッドエリア */
+/* 2段グリッド (上段3つ、下段4つ) エリア */
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(12, 1fr);
   grid-template-rows: repeat(2, 1fr);
-  gap: 18px;
+  gap: 16px;
   flex: 1;
   min-height: 0; /* 縮小時に収めるために必要 */
+}
+
+/* 上段3つ (12 / 3 = 4スパン) */
+.card-top {
+  grid-column: span 4;
+}
+
+/* 下段4つ (12 / 4 = 3スパン) */
+.card-bottom {
+  grid-column: span 3;
 }
 
 /* ステータスカード */
@@ -234,6 +248,13 @@ html, body {
   color: var(--card-kanashii-text);
 }
 .card-kanashii:hover { border-color: #546e7a; }
+
+.card-tsukareta {
+  background: var(--card-tsukareta-bg);
+  border-color: var(--card-tsukareta-border);
+  color: var(--card-tsukareta-text);
+}
+.card-tsukareta:hover { border-color: #5d4037; }
 
 /* 画像・アイコンエリア */
 .image-wrapper {
@@ -447,8 +468,16 @@ html, body {
 @media (orientation: portrait) {
   .grid-container {
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    gap: 14px;
+    grid-template-rows: auto;
+    gap: 12px;
+  }
+  
+  .card-top, .card-bottom {
+    grid-column: span 1;
+  }
+
+  .card-tsukareta {
+    grid-column: span 2; /* 7つ目の「つかれた」を最下段中央に横長配置 */
   }
   
   .app-container {

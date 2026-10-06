@@ -206,6 +206,17 @@ html, body {
   box-shadow: var(--shadow-active);
 }
 
+/* シャッフル時のポップアニメーション */
+@keyframes card-shuffle-pop {
+  0% { transform: scale(0.9) translateY(8px); opacity: 0.6; }
+  50% { transform: scale(1.03) translateY(-4px); opacity: 1; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.card-shuffle-anim {
+  animation: card-shuffle-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
 /* 各カードの固有カラーリング */
 .card-genki {
   background: var(--card-genki-bg);

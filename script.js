@@ -5,6 +5,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   // 要素の取得
+  const gridContainer = document.querySelector('.grid-container');
   const cards = document.querySelectorAll('.status-card');
   const modal = document.getElementById('result-modal');
   const modalCard = document.getElementById('modal-card');
@@ -13,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const modalMessage = document.getElementById('modal-message');
   const btnNext = document.getElementById('btn-next');
   const btnBack = document.getElementById('btn-back');
+  const btnShuffle = document.getElementById('btn-shuffle');
   const btnToggleVoice = document.getElementById('btn-toggle-voice');
   const btnToggleFullscreen = document.getElementById('btn-toggle-fullscreen');
   const canvas = document.getElementById('particle-canvas');
@@ -20,6 +22,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 設定フラグ
   let isVoiceEnabled = true;
+
+  // ==========================================
+  // カードのシャッフル機能（上段3つ・下段4つを維持してランダム並び替え）
+  // ==========================================
+  function shuffleCards(animate = false) {
+    if (!gridContainer) return;
+    const cardList = Array.from(gridContainer.querySelectorAll('.status-card'));
+    if (cardList.length === 0) return;
+
+    // Fisher-Yates アルゴリズムで配列をシャッフル
+    for (let i = cardList.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [cardList[i], cardList[j]] = [cardList[j], cardList[i]];
+    }
+
+    // DOMに再配置し、先頭3つをcard-top（上段用）、残り4つをcard-bottom（下段用）に設定
+    cardList.forEach((card, index) => {
+      if (index < 3) {
+        card.classList.add('card-top');
+        card.classList.remove('card-bottom');
+      } else {
+        card.classList.add('card-bottom');
+        card.classList.remove('card-top');
+      }
+
+      if (animate) {
+        card.classList.remove('card-shuffle-anim');
+        // リフローを発生させてアニメーションを再実行
+        void card.offsetWidth;
+        card.classList.add('card-shuffle-anim');
+      }
+
+      gridContainer.appendChild(card);
+    });
+  }
+
+  // 初回ロード時にシャッフル実行
+  shuffleCards(false);
 
   // ==========================================
   // Web Audio API による効果音生成
@@ -294,11 +334,15 @@ document.addEventListener('DOMContentLoaded', () => {
   // ==========================================
   // モーダル操作
   // ==========================================
-  // つぎのおともだち（リセット）
+  // つぎのおともだち（リセット＆シャッフル）
   btnNext.addEventListener('click', () => {
     playClickSound();
     modal.classList.add('hidden');
     speak('つぎのおともだち、どうぞ！');
+    // 次の児童のためにカードをシャッフル
+    setTimeout(() => {
+      shuffleCards(true);
+    }, 150);
   });
 
   // もういちどえらぶ（閉じるだけ）
@@ -317,6 +361,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // ==========================================
   // コントロールボタン制御
   // ==========================================
+  // 手動ならびかえ（シャッフル）
+  if (btnShuffle) {
+    btnShuffle.addEventListener('click', () => {
+      playClickSound();
+      shuffleCards(true);
+    });
+  }
+
   // 音声ON/OFF切り替え
   btnToggleVoice.addEventListener('click', () => {
     isVoiceEnabled = !isVoiceEnabled;
